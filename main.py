@@ -22,7 +22,7 @@ raw_resources = state["values"]["root_module"]["resources"]
 
 properties = {
     "azurerm_resource_group": ["name","location"],
-    "azurerm_virtual_network": ["name","address_space"]
+    "azurerm_virtual_network": ["name","address_space","guid"]
 }
 
 def extract_resource_values(resource):
@@ -37,14 +37,36 @@ def extract_resource_values(resource):
                 resource_values[value] = resource['values'][value]
     return resource_values
 
+
+
 def create_resource_table(resource_type, resources):
     # Create a markdown table for the specified resource type, with the resource
     # properties as the columns and the resource values as the rows
     table = "## " + resource_type + "\n"
-    table += "|ID|AMI|\n"
-    table += "|-|-|\n"
+    # Get the list of properties for the resource type
+    resource_properties = properties[resource_type]
+    # Generate the table header by iterating over the properties
+    table_header = ["|"]
+    for property in resource_properties:
+        table_header.append(property)
+        table_header.append("|")
+    table += "".join(table_header) + "\n"
+    # Generate the table row separator by iterating over the properties
+    table_row_separator = ["|"]
+    for _ in range(len(resource_properties)):
+        table_row_separator.append("-|")
+    table += "".join(table_row_separator) + "\n"
+    # Generate the table rows by iterating over the resources
     for resource in resources:
-        table += "|" + resource["name"] + "|" + resource["type"] + "|\n"
+        # Generate the table row by iterating over the properties
+        table_row = ["|"]
+        for property in resource_properties:
+            # Convert the list of values to a string using an empty string as the separator
+            property_values = resource[property]
+            property_value = "".join(property_values)
+            table_row.append(property_value)
+            table_row.append("|")
+        table += "".join(table_row) + "\n"
     return table
 
 resources = []

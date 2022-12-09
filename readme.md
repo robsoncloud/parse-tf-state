@@ -1,9 +1,9 @@
 ## azurerm_resource_group
-|ID|AMI|
+|name|location|
 |-|-|
-|example-resources|azurerm_resource_group|
-|example-resources-2|azurerm_resource_group|
+|example-resources|northeurope|
+|example-resources-2|northeurope|
 ## azurerm_virtual_network
-|ID|AMI|
-|-|-|
-|example-network|azurerm_virtual_network|
+|name|address_space|guid|
+|-|-|-|
+|example-network|192.168.0.0/16|694ed187-c7e8-4fd7-a5d6-1fa5f01ba398|
