@@ -4,6 +4,6 @@
 |example-resources|northeurope|
 |example-resources-2|northeurope|
 ## azurerm_virtual_network
-|name|address_space|guid|
+|name|address_space|dns_servers|
 |-|-|-|
-|example-network|192.168.1.0/24|694ed187-c7e8-4fd7-a5d6-1fa5f01ba398|
+|example-network|['192.168.1.0/24']|[]|

@@ -19,26 +19,16 @@ state = json.loads(state_list)
 raw_resources = state["values"]["root_module"]["resources"]
 #print(state["values"]["root_module"]["child_modules"][1])
 
-for res in state["values"]["root_module"]["child_modules"]:
-    #print(res["child_modules"])
-    raw_resources.extend(res["resources"])
-    if "child_modules" in res:
-        for b in res["child_modules"]:
-            if "resources" in b:
-                print("ok")
-                raw_resources.extend(b["resources"])
-#print(state["values"]["root_module"]["child_modules"][1]["child_modules"][0]["resources"])
-    
-    
-  #raw_resources.extend(res)
-  #print(res["resources"])
-  #if(res["resources"]["child_modules"]):
-    #print("tem")
-    #for res2 in res["resources"]["child_modules"]:
-         #raw_resources.extend(res2["resources"])
-         #print(res2["resources"])
-  
-
+if "child_modules" in state["values"]["root_module"]:
+    for res in state["values"]["root_module"]["child_modules"]:
+        #print(res["child_modules"])
+        raw_resources.extend(res["resources"])
+        if "child_modules" in res:
+            for b in res["child_modules"]:
+                if "resources" in b:
+                    print("ok")
+                    raw_resources.extend(b["resources"])
+                    
 properties = {
     "azurerm_resource_group": ["name","location"],
     "azurerm_virtual_network": ["name","address_space","dns_servers"],
