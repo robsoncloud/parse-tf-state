@@ -1,7 +1,6 @@
 import subprocess
 import json
 
-
 def parse_state_list(command):
     try:
         output = subprocess.check_output(command, shell=True)
