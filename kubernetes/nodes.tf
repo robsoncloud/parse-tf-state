@@ -1,7 +1,9 @@
-# controllers
-resource "azurerm_network_interface" "control" {
+#===================
+# NODES
+
+resource "azurerm_network_interface" "node" {
   count               = 3
-  name                = "control-nic-${count.index}"
+  name                = "node-nic-${count.index}"
   location            = azurerm_resource_group.k8s.location
   resource_group_name = azurerm_resource_group.k8s.name
 
@@ -12,15 +14,15 @@ resource "azurerm_network_interface" "control" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "control" {
+resource "azurerm_linux_virtual_machine" "node" {
   count               = 3
-  name                = "control-${count.index}"
+  name                = "node-${count.index}"
   resource_group_name = azurerm_resource_group.k8s.name
   location            = azurerm_resource_group.k8s.location
   size                = "Standard_B2s"
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.control[count.index].id,
+    azurerm_network_interface.node[count.index].id,
   ]
 
   admin_ssh_key {
@@ -54,35 +56,15 @@ resource "azurerm_linux_virtual_machine" "control" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u adminuser -i '${self.private_ip_address},' --private-key ${var.pvt_key} -e 'pub_key=${var.pub_key}' install-ssh-key.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u adminuser -i '${self.private_ip_address},' --private-key ${var.pvt_key} -e 'pub_key=${var.pub_key}' playbooks/install-ssh-key.yml"
   }
 }
 
 
-
-
-/* data "local_file" "public_ssh_key" {
-  filename = "${var.pub_key}"
-}
-
-locals {
-  custom_data = <<CUSTOM_DATA
-  #!/bin/bash
-   sudo -u ubuntu bash -c 'echo "${data.local_file.public_ssh_key.content}" >> ~/.ssh/authorized_keys'
-  CUSTOM_DATA
-}
- */
-
-
- 
-
-
-
-
-
-output "controllers-ip" {
+output "nodes-ip" {
   value = {
-    for control in azurerm_linux_virtual_machine.control :
-    control.name => control.private_ip_address
+    for node in azurerm_linux_virtual_machine.node :
+    node.name => node.private_ip_address
   }
 }
+#======= NODES ===
