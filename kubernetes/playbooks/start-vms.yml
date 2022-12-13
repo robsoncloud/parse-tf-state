@@ -1,0 +1,19 @@
+---
+- name: "for-each items"
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: 'foreach'
+      shell: "az vm start --resource-group kubernetes-the-hard-way --name {{ item }} --no-wait"
+      register: output
+      with_inventory_hostnames:
+        - all
+    - debug:  
+         msg: "{{ item }}"
+      loop: "{{ output.results }}"
+          
+    # - name: 'debug'
+    #   debug:
+    #     msg: "{{ item.end }}"
+    #   loop: "{{ output.results }}"
+      
