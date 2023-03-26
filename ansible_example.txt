@@ -1,0 +1,1 @@
+example ansible vm https://github.com/claudhg9/azure-ansible/blob/master/azurerm.yml
