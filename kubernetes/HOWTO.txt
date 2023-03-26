@@ -1,0 +1,1 @@
+terraform plan -var pvt_key="/home/robson/.ssh/id_rsa" -var pub_key="/home/robson/.ssh/id_rsa.pub"

@@ -4,7 +4,11 @@
   connection: local
   tasks:
     - name: 'foreach'
-      shell: "az vm deallocate --resource-group kubernetes-the-hard-way --name {{ item }} --no-wait"
+      shell: >
+              az vm deallocate 
+              --resource-group kubernetes-the-hard-way 
+              --name {{ item }} 
+              --no-wait
       register: output
       with_inventory_hostnames:
         - all
